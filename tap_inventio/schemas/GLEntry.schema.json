@@ -1,0 +1,121 @@
+{
+  "type": [
+    "null",
+    "object"
+  ],
+  "properties": {
+    "entry-no": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "posting-date": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "account-no": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "amount": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "source-code": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "dimension-set-id": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "description": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "document-type": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "document-no": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "source-type": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "source-no": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "bus-posting-group": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "prod-posting-group": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "global-dim-code1": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "global-dim-code2": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "job-no": {
+      "type": [
+        "null"
+      ]
+    },
+    "ic-partner-code": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "quantity": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "smartexpenseid": {
+      "type": [
+        "null",
+        "string"
+      ]
+    }
+  }
+}
