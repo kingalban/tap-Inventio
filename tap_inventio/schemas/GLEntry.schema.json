@@ -4,6 +4,10 @@
     "object"
   ],
   "properties": {
+    "company_name": {
+      "type": "string",
+      "$comment": "Added by the tap during loading"
+    },
     "entry-no": {
       "type": [
         "null",
@@ -117,5 +121,6 @@
         "string"
       ]
     }
-  }
+  },
+  "required": ["company_name", "account-no"]
 }
