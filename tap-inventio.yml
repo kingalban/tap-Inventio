@@ -1,0 +1,21 @@
+name: tap-inventio
+namespace: tap_inventio
+maintenance_status: active
+label: Inventio
+variant: kingalban
+pip_url: git+https://github.com/kingalban/tap-Inventio.git
+repo: https://github.com/kingalban/tap-Inventio
+description: Microsoft Business Central API provider
+domain_url: https://docs.smartapi.inventio.it/?version=latest
+capabilities:
+  - about
+  - catalog
+  - discover
+keywords:
+  - api
+  - meltano_sdk
+settings:
+  - description: A map of endpoints, companies, and tokens
+    kind: object
+    label: map of endpoints
+    name: endpoints
