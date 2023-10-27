@@ -75,9 +75,10 @@ _ENDPOINTS = (
 
 
 class GLEntryStream(InventioStream):
-    """GLEntry-GET Stream."""
+    """ GLEntry-GET Stream """
 
     name = "GLEntry"
+    primary_keys = ["company_name", "entry-no"]
 
 
 STREAMS = [
