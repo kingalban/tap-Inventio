@@ -10,12 +10,22 @@ from singer_sdk.exceptions import FatalAPIError
 from singer_sdk.helpers.jsonpath import extract_jsonpath
 from singer_sdk.pagination import BaseAPIPaginator
 from singer_sdk.streams import RESTStream
-from singer_sdk.streams.core import TypeConformanceLevel
 
 if TYPE_CHECKING:
     import requests
+    from typing_extensions import NotRequired
 
 SCHEMAS_DIR = Path(__file__).parent / Path("./schemas")
+
+
+class EndpointConfig(TypedDict):
+    """Basic shape of the configuration for each tap.
+
+    'companies' is a dict mapping company names to tokens.
+    """
+
+    companies: dict[str, str]
+    limit: NotRequired[int]
 
 
 class PaginatorResponse(TypedDict):
@@ -27,17 +37,18 @@ class PaginatorResponse(TypedDict):
 
 def normalise_name(name: str) -> str | None:
     """Normalise endpoint names.
+
     eg: 'GLEntry-GET'   -> GLENTRY
         'ITEM-POST'     -> None (don't work with post endpoints).
     """
-
     if name.upper().endswith("-POST"):
         return None
     return name.upper().removesuffix("-GET")
 
 
 class CompanyAPIPaginator(BaseAPIPaginator):
-    """Paginates over a list of companies (yes, very odd)
+    """Paginates over a list of companies (yes, very odd).
+
     The inventio api doesn't have page-pagination,
     but we want to get data for many companies.
     """
@@ -52,7 +63,10 @@ class CompanyAPIPaginator(BaseAPIPaginator):
         company_name, token = next(self._companies_and_keys)
         super().__init__({"company_name": company_name, "token": token})
 
-    def get_next(self, response: requests.Response) -> PaginatorResponse | None:
+    def get_next(
+        self,
+        response: requests.Response,  # noqa: ARG002
+    ) -> PaginatorResponse | None:
         """Get the next pagination token or index from the API response.
 
         Args:
@@ -65,25 +79,23 @@ class CompanyAPIPaginator(BaseAPIPaginator):
         try:
             company_name, token = next(self._companies_and_keys)
             self._page_count += 1
-            return {"company_name": company_name, "token": token}
 
         except StopIteration:
             return None
+
+        else:
+            return {"company_name": company_name, "token": token}
 
 
 class InventioStream(RESTStream):
     """Inventio stream class."""
 
+    # path is required by design of the RESTStream. it is not used
     path = None
     records_jsonpath = "$.entries.entry[*]"  # .entries.entry[*]
 
     _current_company_name: str | None = None
-    selected_by_default: bool = (
-        False  # Only true if we have a token/config for the stream
-    )
 
-    # TODO: add schemas for each stream and remove this line
-    TYPE_CONFORMANCE_LEVEL = TypeConformanceLevel.NONE
     forced_replication_method = (
         "FULL_TABLE"  # Currently no stream has state implemented
     )
@@ -92,7 +104,8 @@ class InventioStream(RESTStream):
     def url_base(self) -> str:
         """Return the API URL root, configurable via tap settings."""
         # Note that '{company_name}' will be replaced by values found in
-        # context and config by the function 'get_url()' (and 'next_page_token' by 'prepare_request()')
+        # context and config by the function 'get_url()'
+        # (and 'next_page_token' by 'prepare_request()')
         return "https://app.cloud.inventio.it/{company_name}/smartapi/"
 
     @property
@@ -116,14 +129,18 @@ class InventioStream(RESTStream):
             headers["User-Agent"] = self.config.get("user_agent")
         return headers
 
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
+    @property
+    def endpoint_config(self) -> EndpointConfig | None:
+        """The config that corresponds only to this endpoint (or None)."""
+        for endpoint_name, config in self.config["endpoints"].items():
+            if normalise_name(endpoint_name) == normalise_name(self.name):
+                return config
+        return None
 
-        for endpoint_conf in self.config["endpoints"]:
-            if normalise_name(endpoint_conf["endpoint"]) == normalise_name(self.name):
-                self.endpoint_config = endpoint_conf
-                self.selected_by_default = True
-                break
+    @property
+    def selected_by_default(self) -> bool:
+        """Selected by default in singer catalog if there is an available config."""
+        return self.endpoint_config is not None
 
     def get_new_paginator(self) -> CompanyAPIPaginator:
         """Create a new pagination helper instance.
@@ -138,7 +155,10 @@ class InventioStream(RESTStream):
         Returns:
             A pagination helper instance.
         """
-        return CompanyAPIPaginator(self.endpoint_config["companies"])
+        if self.endpoint_config:
+            return CompanyAPIPaginator(self.endpoint_config["companies"])
+        msg = f"failed to generate paginator because {self.name} was not configured"
+        raise ValueError(msg)
 
     def get_url_params(
         self,
@@ -161,6 +181,12 @@ class InventioStream(RESTStream):
             "type": f"{self.name}-GET",
             "token": next_page_token["token"],
         }
+
+        if self.endpoint_config is None:
+            msg = (
+                f"failed to generate url params because {self.name} was not configured"
+            )
+            raise ValueError(msg)
 
         if limit := (self.endpoint_config.get("limit") or self.config.get("limit")):
             params["limit"] = limit

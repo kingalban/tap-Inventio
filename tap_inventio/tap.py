@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from collections import Counter
-
 from singer_sdk import Tap
 from singer_sdk import typing as th
 from singer_sdk.exceptions import ConfigValidationError
@@ -18,25 +16,23 @@ class TapInventio(Tap):
     Endpoints and companies are specified like so:
     ```
     {
-    "endpoints": [
-    {
-    "endpoint": "GLENTRY",
-    "companies": {
-    "COMPANY1": "{5B3C070F-BD90-4293-84BB-DCBB1E521B54}",
-    "COMPANY2": "{ACLKLLKE-BD90-4293-ALKF-DCBB1E521B54}",
-    "COMPANY3": "{5B3C070F-BD90-4293-84BB-1451AFLKAFKL}"
-    }
-    },
-    {
-    "endpoint": "DIMENSIONSETENTRY",
-    "companies": {
-    "COMPANY1": "{5B3C070F-BD90-4293-84BB-DCBB1E521B54}",
-    "COMPANY3": "{5B3C070F-BD90-4293-84BB-1451AFLKAFKL}"
-    },
-    "limit": 1
-    }
-    ],
-    "limit": 100
+        "endpoints": {
+            "GLENTRY": {
+                "companies": {
+                    "COMPANY1": "{5B3C070F-BD90-4293-84BB-DCBB1E521B54}",
+                    "COMPANY2": "{ACLKLLKE-BD90-4293-ALKF-DCBB1E521B54}",
+                    "COMPANY3": "{5B3C070F-BD90-4293-84BB-1451AFLKAFKL}"
+                }
+            },
+            "DIMENSIONSETENTRY": {
+                "companies": {
+                    "COMPANY1": "{5B3C070F-BD90-4293-84BB-DCBB1E521B54}",
+                    "COMPANY3": "{5B3C070F-BD90-4293-84BB-1451AFLKAFKL}"
+                },
+                "limit": 1
+            }
+        },
+        "limit": 100
     }
     ```
     """
@@ -46,16 +42,10 @@ class TapInventio(Tap):
     config_jsonschema = th.PropertiesList(
         th.Property(
             "endpoints",
-            th.ArrayType(
-                th.ObjectType(
-                    th.Property("endpoint", th.StringType, required=True),
-                    th.Property(
-                        "companies",
-                        th.ObjectType(additional_properties=th.StringType),
-                        required=True,
-                    ),
-                    th.Property("limit", th.IntegerType, required=False),
-                    additional_properties=True,  # Some streams need additional config
+            th.ObjectType(
+                *(
+                    th.Property(stream.name, th.ObjectType(), required=False)
+                    for stream in streams.STREAMS
                 ),
             ),
             required=True,
@@ -72,11 +62,6 @@ class TapInventio(Tap):
             th.IntegerType,
             description="number of records to get from each endpoint",
         ),
-        th.Property(
-            "start_date",
-            th.DateType,
-            description="earliest day to retrieve (only applicable for AccountScheduleResult)",
-        ),
     ).to_dict()
 
     def _validate_config(
@@ -90,22 +75,12 @@ class TapInventio(Tap):
             warnings_as_errors=warnings_as_errors,
         )
 
-        endpoint_counts = Counter(
-            normalise_name(conf["endpoint"]) for conf in self.config["endpoints"]
-        )
-
-        for endpoint, count in endpoint_counts.most_common():
-            if count > 1 and endpoint is not None:
-                errors.append(
-                    f"endpoint {endpoint!r} was configured more than once! ({count} times)",
-                )
-
-        for configured_endpoint in endpoint_counts:
-            if configured_endpoint not in [
+        for endpoint_name, endpoint_config in self.config["endpoints"].items():
+            if normalise_name(endpoint_name) not in [
                 normalise_name(stream.name) for stream in streams.STREAMS
             ]:
                 warnings.append(
-                    f"endpoint {configured_endpoint} was "
+                    f"endpoint {endpoint_config} was "
                     f"configured but is not available from this tap",
                 )
 
@@ -123,8 +98,7 @@ class TapInventio(Tap):
             A list of discovered streams.
         """
         available_streams_names = {
-            normalise_name(endpoint["endpoint"])
-            for endpoint in self.config["endpoints"]
+            normalise_name(endpoint_name) for endpoint_name in self.config["endpoints"]
         }
         return [
             stream(self)

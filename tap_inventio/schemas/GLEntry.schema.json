@@ -1,8 +1,5 @@
 {
-  "type": [
-    "null",
-    "object"
-  ],
+  "type": "object",
   "properties": {
     "company_name": {
       "type": "string",
@@ -100,7 +97,8 @@
     },
     "job-no": {
       "type": [
-        "null"
+        "null",
+        "string"
       ]
     },
     "ic-partner-code": {
