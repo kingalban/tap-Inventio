@@ -92,7 +92,6 @@ class InventioStream(RESTStream):
 
     # path is required by design of the RESTStream. it is not used
     path = None
-    records_jsonpath = "$.entries.entry[*]"  # .entries.entry[*]
 
     _current_company_name: str | None = None
 
@@ -248,6 +247,10 @@ class InventioStream(RESTStream):
             response.reason = f"{json_response['error']}"
             self.path = self.name  # So the endpoint will be printed in the error
             raise FatalAPIError(self.response_error_message(response))
+
+        if not self.records_jsonpath:
+            msg = "'records_jsonpath' must be specified"
+            raise NotImplementedError(msg)
 
         yield from extract_jsonpath(self.records_jsonpath, input=json_response)
 

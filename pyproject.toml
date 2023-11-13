@@ -39,6 +39,7 @@ ignore = [
 select = ["ALL"]
 src = ["tap_inventio"]
 target-version = "py37"
+exclude = ["dev"]
 
 
 [tool.ruff.flake8-annotations]

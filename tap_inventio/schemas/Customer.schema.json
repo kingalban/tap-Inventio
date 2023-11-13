@@ -1,0 +1,183 @@
+{
+  "type": "object",
+  "properties": {
+    "no": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "name": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "address": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "address-2": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "post-code": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "city": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "country-region-code": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "contact": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "e-mail": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "phone-no": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "currency-code": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "business-posting-group": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "vat-business-posting-group": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "posting-group": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "vat-registration-no": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "blocked": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "blocked-status": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "payment-terms-code": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "bill-to-customer-no": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "customer-price-group": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "language-code": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "payment-method-code": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "customer-disc-group": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "salesperson-code": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "gln": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "reminder-terms-code": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "fin-charge-terms-code": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "oioubl-profile-code": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "company_name": {
+      "type": [
+        "null",
+        "string"
+      ]
+    }
+  },
+  "required": [
+    "company_name",
+    "no"
+  ]
+}

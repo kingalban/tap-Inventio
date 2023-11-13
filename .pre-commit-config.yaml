@@ -34,5 +34,6 @@ repos:
   rev: v1.4.1
   hooks:
   - id: mypy
+    exclude: "dev/.*\\.py"
     additional_dependencies:
     - types-requests

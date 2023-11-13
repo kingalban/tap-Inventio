@@ -75,12 +75,31 @@ _ENDPOINTS = (
 
 
 class GLEntryStream(InventioStream):
-    """ GLEntry-GET Stream """
+    """GLEntry-GET Stream."""
 
     name = "GLEntry"
-    primary_keys = ["company_name", "entry-no"]
+    records_jsonpath = "$.entries.entry[*]"
+    primary_keys = ("company_name", "entry-no")
+
+
+class DimensionSetEntry(InventioStream):
+    """DimensionSetEntry-GET Stream."""
+
+    name = "DimensionSetEntry"
+    records_jsonpath = "$.dimension-entries.dimension-entry[*]"
+    primary_keys = ("company_name", "entry-no", "code")
+
+
+class Customer(InventioStream):
+    """Customer-GET Stream."""
+
+    name = "Customer"
+    records_jsonpath = "$.customers.customer[*]"
+    primary_keys = ("company_name", "no")
 
 
 STREAMS = [
     GLEntryStream,
+    DimensionSetEntry,
+    Customer,
 ]

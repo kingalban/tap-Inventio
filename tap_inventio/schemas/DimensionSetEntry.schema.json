@@ -1,0 +1,34 @@
+{
+  "type": "object",
+  "properties": {
+    "entry-no": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "code": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "value-code": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "company_name": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "code",
+    "company_name",
+    "entry-no"
+  ]
+}
