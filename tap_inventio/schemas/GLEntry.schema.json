@@ -5,19 +5,19 @@
       "type": "string",
       "$comment": "Added by the tap during loading"
     },
-    "entry-no": {
+    "entry_no": {
       "type": [
         "null",
         "string"
       ]
     },
-    "posting-date": {
+    "posting_date": {
       "type": [
         "null",
         "string"
       ]
     },
-    "account-no": {
+    "account_no": {
       "type": [
         "null",
         "string"
@@ -29,13 +29,13 @@
         "string"
       ]
     },
-    "source-code": {
+    "source_code": {
       "type": [
         "null",
         "string"
       ]
     },
-    "dimension-set-id": {
+    "dimension_set_id": {
       "type": [
         "null",
         "string"
@@ -47,61 +47,61 @@
         "string"
       ]
     },
-    "document-type": {
+    "document_type": {
       "type": [
         "null",
         "string"
       ]
     },
-    "document-no": {
+    "document_no": {
       "type": [
         "null",
         "string"
       ]
     },
-    "source-type": {
+    "source_type": {
       "type": [
         "null",
         "string"
       ]
     },
-    "source-no": {
+    "source_no": {
       "type": [
         "null",
         "string"
       ]
     },
-    "bus-posting-group": {
+    "bus_posting_group": {
       "type": [
         "null",
         "string"
       ]
     },
-    "prod-posting-group": {
+    "prod_posting_group": {
       "type": [
         "null",
         "string"
       ]
     },
-    "global-dim-code1": {
+    "global_dim_code1": {
       "type": [
         "null",
         "string"
       ]
     },
-    "global-dim-code2": {
+    "global_dim_code2": {
       "type": [
         "null",
         "string"
       ]
     },
-    "job-no": {
+    "job_no": {
       "type": [
         "null",
         "string"
       ]
     },
-    "ic-partner-code": {
+    "ic_partner_code": {
       "type": [
         "null",
         "string"
@@ -120,5 +120,5 @@
       ]
     }
   },
-  "required": ["company_name", "account-no"]
+  "required": ["company_name", "account_no"]
 }

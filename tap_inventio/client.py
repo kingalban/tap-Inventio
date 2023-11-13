@@ -269,4 +269,4 @@ class InventioStream(RESTStream):
             The updated record dictionary, or ``None`` to skip the record.
         """
         row["company_name"] = self._current_company_name
-        return row
+        return {key.replace("-", "_"): val for key, val in row.items()}

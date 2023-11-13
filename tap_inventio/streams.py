@@ -79,7 +79,7 @@ class GLEntryStream(InventioStream):
 
     name = "GLEntry"
     records_jsonpath = "$.entries.entry[*]"
-    primary_keys = ("company_name", "entry-no")
+    primary_keys = ("company_name", "entry_no")
 
 
 class DimensionSetEntry(InventioStream):
@@ -87,7 +87,7 @@ class DimensionSetEntry(InventioStream):
 
     name = "DimensionSetEntry"
     records_jsonpath = "$.dimension-entries.dimension-entry[*]"
-    primary_keys = ("company_name", "entry-no", "code")
+    primary_keys = ("company_name", "entry_no", "code")
 
 
 class Customer(InventioStream):

@@ -1,7 +1,7 @@
 {
   "type": "object",
   "properties": {
-    "entry-no": {
+    "entry_no": {
       "type": [
         "string",
         "null"
@@ -13,7 +13,7 @@
         "null"
       ]
     },
-    "value-code": {
+    "value_code": {
       "type": [
         "string",
         "null"
@@ -29,6 +29,6 @@
   "required": [
     "code",
     "company_name",
-    "entry-no"
+    "entry_no"
   ]
 }
